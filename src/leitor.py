@@ -24,17 +24,16 @@ def is_fatura_equatorial(text: str) -> bool:
     if re.search(r"Equatorial", text, re.IGNORECASE):
         return True
     return False
-def extrair_fatura_equatorial(text:str,file_name:str) -> dict:
-    dados = {}
-    dados['arquivo'] = file_name
+def extrair_fatura_equatorial(text:str,file_name:str,dados_anterior:dict= {"codigo_instalacao": [], "codigo_cliente": [], "periodo_referencia": [], "arquivo": []}) -> dict:
+    dados_anterior['arquivo'].append(file_name)
     regex_codigo_inst = re.compile(r"INSTALAÇÃO:\s*(\d+)", re.IGNORECASE)
     regex_codigo_cliente = re.compile(r"Conta Contrato\s+(\d+)", re.IGNORECASE)
     regex_mes_ref = re.compile(r"Conta M[eê]s\s+(\d{2})\/(\d{4})", re.MULTILINE)
-    dados ['codigo_instalacao'] = re.search(regex_codigo_inst, text).group(1) if re.search(regex_codigo_inst, text) else None
-    dados ['codigo_cliente'] = re.search(regex_codigo_cliente, text).group(1) if re.search(regex_codigo_cliente, text) else None
+    dados_anterior['codigo_instalacao'].append(int(re.search(regex_codigo_inst, text).group(1)) if re.search(regex_codigo_inst, text) else None)
+    dados_anterior['codigo_cliente'].append(int(re.search(regex_codigo_cliente, text).group(1)) if re.search(regex_codigo_cliente, text) else None)
     mes_ref_match = re.search(regex_mes_ref, text).group(1)
     ano_ref_match = re.search(regex_mes_ref, text).group(2)
     periodo_ref = datetime.datetime(int(ano_ref_match), int(mes_ref_match), 1)
-    dados ['periodo_referencia'] = periodo_ref
-    logging.info(f"Dados extraídos do arquivo {file_name}: {dados}")
-    return dados
+    dados_anterior['periodo_referencia'].append(periodo_ref)
+    logging.info(f"Dados extraídos do arquivo {file_name}")
+    return dados_anterior
