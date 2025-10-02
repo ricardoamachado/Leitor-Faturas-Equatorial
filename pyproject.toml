@@ -1,7 +1,7 @@
 [project]
 name = "leitor-faturas-equatorial"
 version = "0.1.0"
-description = "Add your description here"
+description = "Leitor open source de faturas de energia da Equatorial."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
