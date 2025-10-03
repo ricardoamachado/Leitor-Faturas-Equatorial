@@ -20,6 +20,6 @@ def main():
     dados = pd.DataFrame(dados)
     dados = dados.set_index(['codigo_instalacao', 'periodo_referencia'])
     print(dados)
-
+    dados.to_csv(f"output/faturas_equatorial_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv")
 if __name__ == "__main__":
     main()
