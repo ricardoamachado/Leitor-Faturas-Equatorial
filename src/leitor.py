@@ -86,10 +86,16 @@ def extrair_fatura_equatorial(text:str,file_name:str,dados_anterior:dict= {"codi
         logging.warning("Não foi possível calcular a energia consumida.")
     dados_anterior['energia_consumida'].append(energia_consumida)
     # Match do período de referência.
-    mes_ref_match = re.search(regex_mes_ref, text).group(1)
-    ano_ref_match = re.search(regex_mes_ref, text).group(2)
-    periodo_ref = datetime.datetime(int(ano_ref_match), int(mes_ref_match), 1)
+    match_periodo_ref = re.search(regex_mes_ref, text)
+    if match_periodo_ref:
+        mes_ref_match = match_periodo_ref.group(1)
+        ano_ref_match = match_periodo_ref.group(2)
+        periodo_ref = datetime.datetime(int(ano_ref_match), int(mes_ref_match), 1)
+    else:
+        periodo_ref = None
+        logging.warning("Nenhum período de referência encontrado.")
     dados_anterior['periodo_referencia'].append(periodo_ref)
+
     # Match do ICMS.
     match_icms = re.search(regex_icms, text)
     if match_icms:
