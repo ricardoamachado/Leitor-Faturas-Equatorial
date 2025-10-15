@@ -76,6 +76,7 @@ def extrair_fatura_equatorial(text:str,file_name:str,dados_anterior:dict= {"codi
     else:
         energia_faturada = None
         dados_anterior['energia_faturada'].append(energia_faturada)
+        dados_anterior['tarifa_sem_imposto'].append(None)
         logging.warning("Nenhuma energia faturada encontrada.")
     # Cálculo da energia consumida.
     if energia_faturada is not None and energia_compensada is not None:
